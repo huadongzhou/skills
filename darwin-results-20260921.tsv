@@ -1,3 +1,28 @@
 ﻿timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-09-21T16:33	1e11cb2	cognition	-	79.2	baseline	-	结构官85.9/红队74.7/实测78.8，triage均值	full_test
 2026-09-21T16:33	1e11cb2	foundation	-	75.5	baseline	-	结构官80.4/红队63.2/实测84.4，triage均值	full_test
+2026-09-21T17:00	28299d5	cognition	79.2	-	keep	-	第一轮：修 P0-P3 全部审阅发现；paired 乙(修复版)54/60 vs 甲44.5	full_test
+2026-09-21T17:00	28299d5	foundation	75.5	-	keep	-	第一轮：修 P0-P3 全部审阅发现；paired 甲(修复版)胜	full_test
+2026-09-21T17:15	4cd8d3f	cognition	-	-	keep	-	第二轮：留白分两类+旁路覆盖交互条款；paired2 乙57/60 vs 甲42.5	full_test
+2026-09-21T17:15	4cd8d3f	foundation	-	-	keep	-	第二轮：三操作单轮可用性+污染防护+哈希核验；paired2 甲57 vs 乙44	full_test
+2026-09-21T17:40	df8dacf	cognition	-	-	keep	-	第三轮：留白三类回填四处判据+恢复直接生成免确认词	full_test
+2026-09-21T17:40	df8dacf	foundation	-	-	keep	-	第三轮：templates归属改文件名集合+核验基线范围+占位符归一化	full_test
+2026-09-21T17:55	acd9a18	cognition	-	-	keep	-	第四轮：:85豁免扩到无反直觉结论节点+免确认词改「直接」二字（引入方向性错误）	full_test
+2026-09-21T17:55	acd9a18	foundation	-	-	keep	-	第四轮：归一化改通配符语义修双H1+逐份判定+仓库根清单	full_test
+2026-09-21T18:00	2874de7	cognition	-	-	keep	-	第五轮：免确认词加否定/延后护栏（自伤P0：误禁写templates/）	full_test
+2026-09-21T18:00	2874de7	foundation	-	-	keep	-	第五轮：目录级保守门禁+越界定义与上报解耦	full_test
+2026-09-21T18:05	ee26c99	cognition	-	-	keep	-	第六轮：修自伤P0+目录层/文件层分层+旁路保留一线修复	full_test
+2026-09-21T18:05	ee26c99	foundation	-	-	keep	-	第六轮：不该动集合改全集减允许集+补删除核验	full_test
+2026-09-21T18:08	339d164	cognition	-	-	keep	-	第七轮：延后护栏推广+附录补日期/返回条数槽	full_test
+2026-09-21T18:08	339d164	foundation	-	-	keep	-	第七轮：:120加「目录层通过后」+兜底改不落笔	full_test
+2026-09-21T18:11	3d885e7	cognition	-	-	keep	-	第八轮：模板补两槽+护栏否定豁免+疑问语气不触发	full_test
+2026-09-21T18:11	3d885e7	foundation	-	-	keep	-	第八轮：目录层补「目录为空」修空目录无出路	full_test
+2026-09-21T18:14	22b0980	cognition	-	-	keep	-	第九轮：否决条件重构为三条+白名单不受否定否决	full_test
+2026-09-21T18:14	22b0980	foundation	-	-	keep	-	第九轮：痕迹口径明示文件名口径+读取优先级补两例	full_test
+2026-09-21T18:18	8265da5	cognition	-	-	keep	-	第十轮：前置延后词+语气否决限定+白名单收窄为四词	full_test
+2026-09-21T18:18	8265da5	foundation	-	-	keep	-	第十轮：同步复制行补操作限定（无改动）	full_test
+2026-09-21T18:22	eddc590	cognition	-	-	keep	-	第十一轮：私有实体来源口径+附录两槽补不适用	full_test
+2026-09-21T18:26	2ecad0c	cognition	79.2	82	keep	-	第十二轮终版：模板逐槽对齐+来源串统一+滥用闸门；红队终审无P0/P1	full_test
+2026-09-21T18:26	2ecad0c	foundation	75.5	86	keep	-	第十二轮终版；红队终审无P0/P1/P2，实测E1-E5全链路跑通	full_test
+2026-09-21T18:26	2ecad0c	cognition	-	-	paired	-	终版vs基线匿名盲评：终版55/60 vs 基线43/60，明显胜出	full_test
+2026-09-21T18:26	2ecad0c	foundation	-	-	paired	-	终版vs基线匿名盲评：终版56/60 vs 基线35/60，明显胜出	full_test
