@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>writing-for-agents · 两子技能审阅卡片</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; background: #E9E5DC; font-family: 'Noto Sans SC','Inter',sans-serif; }
+  .card { width: 900px; background: #FAFAF5; color: #1A1A1A; display: flex; flex-direction: column; }
+
+  .brand-bar { background: #1A1A1A; padding: 22px 48px; display: flex; justify-content: space-between; align-items: center; }
+  .brand-name { font-size: 21px; font-weight: 800; color: #fff; letter-spacing: .02em; font-family: 'Inter','Noto Sans SC',sans-serif; }
+  .brand-name .dot { color: #E8590C; }
+  .brand-date { font-size: 14px; font-weight: 500; color: #888; font-family: 'Inter',sans-serif; }
+
+  .title-section { padding: 34px 48px 6px; }
+  .title-kicker { font-size: 12px; font-weight: 700; letter-spacing: .18em; color: #E8590C; text-transform: uppercase; font-family: 'Inter',sans-serif; }
+  .title-main { font-size: 30px; font-weight: 900; margin-top: 10px; letter-spacing: -.01em; }
+  .title-sub { font-size: 14px; color: #6B6558; margin-top: 8px; line-height: 1.65; }
+  .title-sub code { font-family: 'Inter',monospace; font-size: 13px; background: #F0EBE2; padding: 1px 5px; border-radius: 4px; }
+
+  .stats { display: grid; grid-template-columns: repeat(5,1fr); gap: 1px; background: #EDE7DC; border-top: 1px solid #EDE7DC; border-bottom: 1px solid #EDE7DC; margin-top: 24px; }
+  .stat { background: #FAFAF5; padding: 14px 10px 15px; text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 900; font-family: 'Inter',sans-serif; letter-spacing: -.02em; line-height: 1; }
+  .stat-num.hot { color: #E8590C; }
+  .stat-num.ok { color: #2F6F4E; }
+  .stat-num.zero { color: #B0A898; }
+  .stat-label { font-size: 11px; color: #6B6558; margin-top: 6px; line-height: 1.4; }
+
+  .verdict { padding: 26px 48px 4px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .vcard { border: 1px solid #EDE7DC; border-radius: 12px; padding: 16px 18px 17px; background: #fff; }
+  .vcard.cog { border-top: 3px solid #E8590C; }
+  .vcard.fnd { border-top: 3px solid #1A1A1A; }
+  .vcard-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 9px; }
+  .vcard-name { font-size: 15px; font-weight: 800; font-family: 'Inter','Noto Sans SC',sans-serif; }
+  .vcard-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; font-family: 'Inter','Noto Sans SC',sans-serif; }
+  .cog .vcard-tag { background: #FDECE2; color: #C24A0A; }
+  .fnd .vcard-tag { background: #EAEAEA; color: #333; }
+  .vcard-claim { font-size: 13px; font-weight: 700; line-height: 1.55; margin-bottom: 8px; }
+  .vcard-body { font-size: 12px; color: #6B6558; line-height: 1.72; }
+  .vcard-body b { color: #1A1A1A; font-weight: 700; }
+
+  .section { padding: 28px 48px 0; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 15px; }
+  .section-title { font-size: 17px; font-weight: 800; }
+  .section-note { font-size: 11.5px; color: #9A9284; font-family: 'Inter','Noto Sans SC',sans-serif; }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th { font-size: 10.5px; font-weight: 700; color: #9A9284; text-align: left; letter-spacing: .06em; text-transform: uppercase; padding: 0 10px 8px; border-bottom: 1px solid #E8E0D4; font-family: 'Inter','Noto Sans SC',sans-serif; }
+  tbody td { padding: 11px 10px; border-bottom: 1px solid #F0EBE2; font-size: 12px; vertical-align: top; line-height: 1.62; }
+  tbody tr:last-child td { border-bottom: none; }
+  .pat { font-weight: 800; font-size: 12px; white-space: nowrap; }
+  .pat span { display: block; font-size: 9.5px; font-weight: 700; color: #fff; background: #E8590C; border-radius: 5px; padding: 1px 5px; margin-top: 5px; width: fit-content; font-family: 'Inter',sans-serif; }
+  .pat.med span { background: #B0A898; }
+  td.ev { color: #6B6558; }
+  td.ev code { font-family: 'Inter',monospace; font-size: 11px; background: #F5F0E8; padding: 1px 4px; border-radius: 3px; color: #1A1A1A; }
+  td.ev em { font-style: normal; color: #C24A0A; font-weight: 700; }
+  td.same { color: #2F6F4E; font-weight: 700; font-size: 11.5px; }
+
+  .todos { display: flex; flex-direction: column; gap: 9px; }
+  .todo { display: flex; gap: 13px; background: #fff; border: 1px solid #EDE7DC; border-radius: 10px; padding: 12px 15px; }
+  .todo.p0 { border-color: #F0C3A8; background: #FFFBF7; }
+  .prio { flex-shrink: 0; width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; font-family: 'Inter',sans-serif; color: #fff; background: #B0A898; }
+  .todo.p0 .prio { background: #E8590C; }
+  .todo.p1 .prio { background: #4A4A4A; }
+  .todo.p2 .prio { background: #8C8577; }
+  .todo-body { flex: 1; }
+  .todo-title { font-size: 12.5px; font-weight: 700; margin-bottom: 3px; }
+  .todo-desc { font-size: 11.5px; color: #6B6558; line-height: 1.6; }
+  .todo-desc code { font-family: 'Inter',monospace; font-size: 11px; background: #F5F0E8; padding: 1px 4px; border-radius: 3px; color: #1A1A1A; }
+
+  .footer { margin-top: 30px; background: #F5F0E8; border-top: 1px solid #E8E0D4; padding: 22px 48px 30px; }
+  .footer-title { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #9A9284; font-family: 'Inter',sans-serif; margin-bottom: 12px; }
+  .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 26px; }
+  .fitem { font-size: 11.5px; color: #6B6558; line-height: 1.65; }
+  .fitem b { color: #1A1A1A; font-weight: 700; display: block; margin-bottom: 2px; font-size: 12px; }
+  .fitem i { font-style: normal; color: #2F6F4E; font-weight: 700; }
+  .files { margin-top: 20px; padding-top: 16px; border-top: 1px solid #E8E0D4; font-size: 11px; color: #9A9284; line-height: 1.9; font-family: 'Inter','Noto Sans SC',sans-serif; }
+  .files code { background: #EDE7DC; padding: 1px 5px; border-radius: 4px; color: #4A4A4A; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand-bar">
+    <div class="brand-name">WorkBuddy<span class="dot">.</span> 技能审阅</div>
+    <div class="brand-date">2026-09-21 · 多 Agent 并行</div>
+  </div>
+
+  <div class="title-section">
+    <div class="title-kicker">writing-for-agents framework</div>
+    <div class="title-main">两个子技能审阅汇总</div>
+    <div class="title-sub">对 <code>skills/cognition</code> 与 <code>skills/foundation</code> 的独立审阅。两个并行 agent 各自读完框架与目标技能全部文件，彼此不可见，本卡片在其独立结论之上做交叉比对。全程只读，未改动 <code>skills/</code> 下任何文件。</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">2</div><div class="stat-label">审阅技能</div></div>
+    <div class="stat"><div class="stat-num hot">7</div><div class="stat-label">跨技能共性缺陷模式</div></div>
+    <div class="stat"><div class="stat-num hot">4</div><div class="stat-label">高严重度发现</div></div>
+    <div class="stat"><div class="stat-num zero">0</div><div class="stat-label">建议拆分</div></div>
+    <div class="stat"><div class="stat-num ok">0</div><div class="stat-label">源文件改动</div></div>
+  </div>
+
+  <div class="verdict">
+    <div class="vcard cog">
+      <div class="vcard-head"><div class="vcard-name">cognition</div><div class="vcard-tag">跑得快而浅</div></div>
+      <div class="vcard-claim">防赶工防御整体失效。</div>
+      <div class="vcard-body">抵抗早停的希望押在两处 <code>🔴 CHECKPOINT</code> 上，而它们是<b>内联确认、不是上下文边界</b>；真正能抵挡的完成判据又被「或一条明确的检索无果」击穿，并经兜底原则自动豁免到第三步——四步流程里没有任何一处真正抵抗早停。</div>
+    </div>
+    <div class="vcard fnd">
+      <div class="vcard-head"><div class="vcard-name">foundation</div><div class="vcard-tag">跑错方向而自以为对</div></div>
+      <div class="vcard-claim">「模板」一词未消歧，走偏后仍判绿。</div>
+      <div class="vcard-body">L19-20 立了两个 <code>templates/</code>（只读基准 / 写入目标），但下游四处一律裸写「模板」；叠加「无变化」可一键满足的完成判据，<b>最可能用错基准，还把没做的事汇报成做完</b>。</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">跨技能共性缺陷模式</div>
+      <div class="section-note">同源优先修 · 证据为行号</div>
+    </div>
+    <table>
+      <thead>
+        <tr><th style="width:132px">模式</th><th>cognition 证据</th><th>foundation 证据</th><th style="width:96px">框架依据</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="pat">A · 判据含免费逃逸项<span>最高</span></td>
+          <td class="ev"><code>L70</code>「或一条明确的检索无果」+ <code>L104</code> 自动豁免 → 可先标无果、再写<em>无来源的反转</em></td>
+          <td class="ev"><code>L83</code> 四选一含「无变化」而<em>无举证义务</em> → 每节一律标无变化即全绿</td>
+          <td class="same">Demand / checkable &amp; exhaustive</td>
+        </tr>
+        <tr>
+          <td class="pat med">B · 指针缓存正文身份</td>
+          <td class="ev"><code>L3</code> 九维+三件套+反转 全是正文复述；触发段<em>一个分支写两遍</em></td>
+          <td class="ev"><code>L3</code> 操作名与释义句各列一次；结尾句不改变任何路径（no-op）</td>
+          <td class="same">Cut identity the body carries</td>
+        </tr>
+        <tr>
+          <td class="pat med">C · CHECKPOINT 当成上下文边界</td>
+          <td class="ev"><code>L59</code> <code>L85</code> 内联停等，一个 token 也没清掉，反成里程碑拉力</td>
+          <td class="ev"><code>L63</code> <code>L98</code> <code>L102</code> 同构；措辞易被读成边界</td>
+          <td class="same">Hiding needs a real boundary</td>
+        </tr>
+        <tr>
+          <td class="pat med">D · 单一事实源被破坏</td>
+          <td class="ev">反转规则碎五处；十一领域名单双份；<code>domains.md</code> 被指两次</td>
+          <td class="ev">禁令三处；授权旁路两遍；「禁止依赖方向」两处</td>
+          <td class="same">single source of truth</td>
+        </tr>
+        <tr>
+          <td class="pat med">E · 指针未编码触发条件</td>
+          <td class="ev"><code>L46-47</code> 只列「里面有什么」，何时读散在 <code>L54/L63/L78</code></td>
+          <td class="ev"><code>L19-20</code> 立了两个 templates，下游 <code>L81/101/105/117</code> 退化为裸词</td>
+          <td class="same">encodes the condition</td>
+        </tr>
+        <tr>
+          <td class="pat med">F · 靠否定表达</td>
+          <td class="ev"><code>L79</code> <code>L110</code>；<em>但 <code>L108</code>「不编造」属框架允许的硬护栏，勿删</em></td>
+          <td class="ev"><code>L13</code> 三个「不」堆叠；<code>AGENTS.md:65-70</code> 整块禁令</td>
+          <td class="same">Negation</td>
+        </tr>
+        <tr>
+          <td class="pat med">G · no-op 与 exposition</td>
+          <td class="ev"><code>L12</code>「三种视角看同一个点」、<code>L32</code>「任何实体都可从九个维度审问」</td>
+          <td class="ev"><code>L8</code>「为项目准备稳定的根级上下文文档……」</td>
+          <td class="same">no-op 判据：是否改变行为</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">建议动作清单</div>
+      <div class="section-note">按优先级 · 先做且只做 P0</div>
+    </div>
+    <div class="todos">
+      <div class="todo p0">
+        <div class="prio">P0</div>
+        <div class="todo-body">
+          <div class="todo-title">修两处完成判据（本地、便宜、收益最大）</div>
+          <div class="todo-desc">cognition <code>L70</code>+<code>L104</code>：给「检索无果」附加举证义务（≥2 条彼此不同的检索式 + 留白去向），取消第三步的来源豁免。foundation <code>L83</code>：整段重写——定域「本次点名的每份文档」、统一计量单位为「章节」、「无变化」须写出与基准模板的逐条对照结果。<br>样板：foundation <code>L105</code> 的同步判据是本仓库内最强的一条，照它的强度改。</div>
+        </div>
+      </div>
+      <div class="todo p1">
+        <div class="prio">P1</div>
+        <div class="todo-body">
+          <div class="todo-title">指针消歧与瘦身</div>
+          <div class="todo-desc">两处 <code>description</code> 重写：归还正文身份、分支收敛为一、删 no-op（报告已给出可直接替换的整行文案）。foundation 立「<b>基准模板 / 仓库模板</b>」两个术语逐处替换裸词，并补：章节若已在仓库模板，不计入「保留」，判为「无变化」。</div>
+        </div>
+      </div>
+      <div class="todo p2">
+        <div class="prio">P2</div>
+        <div class="todo-body">
+          <div class="todo-title">单一事实源与顺序</div>
+          <div class="todo-desc">cognition：反转的两条判据收拢到「反转」节；领域名单只留 <code>domains.md</code> 一份；删 <code>L47</code> 重复指向。foundation：禁令只留「管辖范围」一处；授权旁路提升为「执行纪律」里的单一事实源；把「文档定位」「模板机制」整块移到操作三之后。</div>
+        </div>
+      </div>
+      <div class="todo">
+        <div class="prio">P3</div>
+        <div class="todo-body">
+          <div class="todo-title">措辞级</div>
+          <div class="todo-desc">否定式改正面目标（保留 cognition <code>L108</code> 例外）；删三处 no-op 整句；foundation <code>L81</code> 用领先词「<b>对账</b>」承载「逐项核对并给处置」。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-title">共识 · 与遗留</div>
+    <div class="footer-grid">
+      <div class="fitem"><b>不拆分（两份报告一致）</b>cognition 的候选切口与 foundation 的三操作互斥，都不满足框架的拆分条件；拆分要额外支付一份常驻 description。</div>
+      <div class="fitem"><b>保持 model-invoked（两份报告一致）</b>触发来自自然语言意图，用户不会说出技能名——正是 SKILL-MECHANICS 所要求的情形。成本问题靠修剪解决，不是取消 description。</div>
+      <div class="fitem"><b>CHECKPOINT 保留</b>作为人类审批门它们是对的——认知负载「<i>is the price of human agency</i>」。要改的只是标签与预期，不是它们的存在。</div>
+      <div class="fitem"><b>遗留：需实跑验证</b>no-op 判据在框架中明确要求「<i>settle it by running the document, not by debate</i>」。P0 改完后以同一任务跑一轮对比，用行为差异确认。</div>
+    </div>
+    <div class="files">
+      明细报告 &nbsp;<code>writing-for-agents-审阅-cognition.md</code> &nbsp;<code>writing-for-agents-审阅-foundation.md</code> &nbsp;<code>writing-for-agents-审阅-汇总.md</code><br>
+      框架来源 &nbsp;Matt Pocock · writing-for-agents（SKILL.md + SKILL-MECHANICS.md）· MIT
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

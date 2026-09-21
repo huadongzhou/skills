@@ -1,0 +1,3 @@
+﻿timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-09-21T16:33	1e11cb2	cognition	-	79.2	baseline	-	结构官85.9/红队74.7/实测78.8，triage均值	full_test
+2026-09-21T16:33	1e11cb2	foundation	-	75.5	baseline	-	结构官80.4/红队63.2/实测84.4，triage均值	full_test
