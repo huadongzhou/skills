@@ -75,7 +75,7 @@ skills/<category>/<category>/<name>/SKILL.md
 
 #### 单仓多技能：完整可执行示例（以本仓库为例）
 
-本仓库 `github.com/huadongzhou/skills` 即模式一布局，技能位于 `skills/knowledge/` 桶下（`cognition`、`foundation`）。注意**默认分支是 `master`**：
+本仓库 `github.com/huadongzhou/skills` 采用模式一布局，技能按分类桶组织（`skills/<category>/<name>/`）。当前工作副本 `D:\project\skills` 采用**扁平布局**，技能直接位于 `skills/cognition`、`skills/foundation`——两种布局都能被识别，分类桶并非必需。注意**默认分支是 `master`**：
 
 ```bash
 # ① 推送公开仓库
@@ -137,7 +137,7 @@ CLI 在仓库中按以下顺序搜索，**每个技能容器目录最多向下�
 }
 ```
 
-> ⚠️ **本项目注意**：`D:\project\skills` 采用模式一，技能位于 `skills/knowledge/cognition`、`skills/knowledge/foundation`。同级的 `skills/foundation-workspace/`（eval 产物：`report.html`、`benchmark.json` 等）无 `SKILL.md`，不会被识别为技能，但会随仓库发布，建议移出 `skills/` 或加入 `.gitignore`。
+> ⚠️ **本项目注意**：`D:\project\skills` 采用扁平布局，技能位于 `skills/cognition`、`skills/foundation`。仓库根的评测产物（`darwin-*` 系列的 md / html / png / tsv）无 `SKILL.md`，不会被识别为技能，但会随仓库发布，建议移出仓库或加入 `.gitignore`。
 
 ---
 

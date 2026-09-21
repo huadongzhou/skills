@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>子技能审阅卡片 · cognition &amp; foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    display: flex; justify-content: center; align-items: flex-start;
+    min-height: 100vh; background: #EFEEE7;
+    font-family: 'Noto Sans SC', 'Inter', sans-serif; padding: 0;
+  }
+  .card { width: 900px; background: #FAFAF5; color: #1A1A1A; display: flex; flex-direction: column; }
+
+  .brand-bar { background: #1A1A1A; padding: 22px 48px; display: flex; justify-content: space-between; align-items: center; }
+  .brand-name { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: .02em; }
+  .brand-name .dot { color: #E8590C; }
+  .brand-date { font-size: 14px; font-weight: 500; color: #8A8A8A; font-family: 'Inter', sans-serif; }
+
+  .hero { padding: 38px 48px 30px; border-bottom: 1px solid #E4E2D8; }
+  .hero-kicker { font-size: 12px; font-weight: 700; letter-spacing: .16em; color: #E8590C; text-transform: uppercase; margin-bottom: 12px; }
+  .hero-title { font-size: 34px; font-weight: 900; line-height: 1.24; letter-spacing: -.01em; }
+  .hero-sub { margin-top: 12px; font-size: 14px; color: #6B6B6B; line-height: 1.75; }
+  .hero-sub b { color: #1A1A1A; }
+
+  .stat-row { display: flex; gap: 14px; margin-top: 26px; }
+  .stat { flex: 1; border: 1.5px solid #E0DED3; border-radius: 12px; padding: 16px 18px; background: #FFF; }
+  .stat.p0 { border-color: #E8590C; background: #FFF7F2; }
+  .stat-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; color: #8A8A8A; }
+  .stat-val { font-size: 38px; font-weight: 900; font-family: 'Inter', sans-serif; line-height: 1.1; margin-top: 4px; }
+  .stat.p0 .stat-val { color: #E8590C; }
+  .stat-note { font-size: 11.5px; color: #8A8A8A; margin-top: 3px; line-height: 1.5; }
+
+  .section { padding: 30px 48px; border-bottom: 1px solid #E4E2D8; }
+  .section-title { font-size: 12px; font-weight: 800; letter-spacing: .14em; color: #A8A8A8; text-transform: uppercase; margin-bottom: 18px; }
+
+  table.matrix { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.matrix th { text-align: left; font-size: 11px; font-weight: 700; color: #A8A8A8; letter-spacing: .06em; padding: 0 0 10px; border-bottom: 1.5px solid #1A1A1A; }
+  table.matrix th.c, table.matrix td.c { text-align: center; width: 130px; }
+  table.matrix td { padding: 9px 0; border-bottom: 1px solid #EDEBE2; }
+  .dim-label { font-weight: 600; }
+  .mark { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 15px; }
+  .mark.ok { color: #2F9E44; } .mark.warn { color: #E8590C; } .mark.bad { color: #C92A2A; }
+
+  .p0 { border: 1.5px solid #E0DED3; border-radius: 12px; background: #FFF; padding: 18px 20px; margin-bottom: 12px; }
+  .p0.risk { border-color: #C92A2A; background: #FFF5F5; }
+  .p0-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+  .p0-tag { font-size: 10px; font-weight: 800; letter-spacing: .1em; background: #1A1A1A; color: #fff; padding: 3px 8px; border-radius: 4px; font-family: 'Inter', sans-serif; }
+  .p0.risk .p0-tag { background: #C92A2A; }
+  .p0-title { font-size: 15px; font-weight: 800; }
+  .p0-body { font-size: 13px; color: #444; line-height: 1.72; }
+  .p0-body p + p { margin-top: 6px; }
+  .k { font-weight: 700; color: #1A1A1A; }
+  .code { font-family: 'Inter', ui-monospace, monospace; background: #F1F0E8; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  .cols { display: flex; gap: 16px; }
+  .col { flex: 1; border: 1.5px solid #E0DED3; border-radius: 12px; background: #FFF; padding: 18px 20px; }
+  .col-name { font-family: 'Inter', monospace; font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .col-meta { font-size: 11.5px; color: #8A8A8A; margin-bottom: 14px; }
+  .col ul { list-style: none; }
+  .col li { font-size: 12.5px; color: #444; line-height: 1.65; padding: 7px 0; border-bottom: 1px solid #F0EEE5; }
+  .col li:last-child { border-bottom: none; }
+  .col .good { color: #2F9E44; font-weight: 700; }
+  .col h4 { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: #A8A8A8; margin: 14px 0 6px; text-transform: uppercase; }
+  .col h4:first-of-type { margin-top: 0; }
+
+  ol.steps { list-style: none; counter-reset: s; }
+  ol.steps li { counter-increment: s; position: relative; padding: 9px 0 9px 38px; font-size: 13.5px; line-height: 1.65; border-bottom: 1px solid #EDEBE2; }
+  ol.steps li:last-child { border-bottom: none; }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: 9px;
+    width: 24px; height: 24px; border-radius: 50%; background: #1A1A1A; color: #fff;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.steps li b { font-weight: 700; }
+
+  .footer { padding: 22px 48px 30px; font-size: 11.5px; color: #9A9A9A; line-height: 1.7; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand-bar">
+    <div class="brand-name">SKILL REVIEW<span class="dot">.</span> writing-for-agents</div>
+    <div class="brand-date">2026-09-21</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-kicker">审阅对象 · skills/cognition · skills/foundation</div>
+    <div class="hero-title">工程完备度超标，<br>失分在层级摆放与重复实现</div>
+    <div class="hero-sub">
+      判据取自 <b>writing-for-agents / SKILL-MECHANICS</b>。两份技能的完成判据、异常表、留白机制都写得比判据要求更硬；
+      失分集中在三处：<b>公共规则寄居单一分支</b>、<b>同一含义两份实现</b>、<b>negation 驱动</b>。
+      其中一项 P0 会造成<b>覆盖用户自有文档</b>的实际风险。
+    </div>
+    <div class="stat-row">
+      <div class="stat p0"><div class="stat-label">P0 必须改</div><div class="stat-val">6</div><div class="stat-note">含 1 项文件覆盖风险</div></div>
+      <div class="stat"><div class="stat-label">P1 应该改</div><div class="stat-val">11</div><div class="stat-note">多为 SSOT 与 negation</div></div>
+      <div class="stat"><div class="stat-label">P2 可选</div><div class="stat-val">9</div><div class="stat-note">脆指针与硬编码</div></div>
+      <div class="stat"><div class="stat-label">实证断链</div><div class="stat-val">0</div><div class="stat-note">交叉引用全部可解析</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">判据维度评分</div>
+    <table class="matrix">
+      <tr><th>维度</th><th class="c">cognition</th><th class="c">foundation</th></tr>
+      <tr><td class="dim-label">description 指针质量</td><td class="c"><span class="mark warn">⚠</span></td><td class="c"><span class="mark warn">⚠</span></td></tr>
+      <tr><td class="dim-label">调用方式选择</td><td class="c"><span class="mark ok">✓</span></td><td class="c"><span class="mark ok">✓</span></td></tr>
+      <tr><td class="dim-label">信息层级 / 分支下推</td><td class="c"><span class="mark warn">⚠</span></td><td class="c"><span class="mark bad">✕</span></td></tr>
+      <tr><td class="dim-label">co-location</td><td class="c"><span class="mark warn">⚠</span></td><td class="c"><span class="mark warn">⚠</span></td></tr>
+      <tr><td class="dim-label">完成判据 clarity + demand</td><td class="c"><span class="mark ok">✓</span></td><td class="c"><span class="mark ok">✓</span></td></tr>
+      <tr><td class="dim-label">leading words / negation</td><td class="c"><span class="mark bad">✕</span></td><td class="c"><span class="mark warn">⚠</span></td></tr>
+      <tr><td class="dim-label">pruning（SSOT / cache / no-op）</td><td class="c"><span class="mark warn">⚠</span></td><td class="c"><span class="mark warn">⚠</span></td></tr>
+      <tr><td class="dim-label">sprawl</td><td class="c"><span class="mark warn">⚠</span></td><td class="c"><span class="mark warn">⚠</span></td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">六项 P0</div>
+
+    <div class="p0 risk">
+      <div class="p0-head"><span class="p0-tag">foundation</span><span class="p0-title">文件层判据缺阈值 → 会覆盖用户自有文档</span></div>
+      <div class="p0-body">
+        <p><span class="k">事实：</span>「公共章节＝除 H1 外的标题与表头」，而 <span class="code">templates/AGENTS.md</span> 的标题全是通用名（项目介绍 / 技术架构 / 项目目录 / 开发命令 / 编码开发…）。</p>
+        <p><span class="k">后果：</span>项目自带的 AGENTS.md 只要用到一两个通用标题，就判为「部分重合 → 模板损坏」，走补齐路径<b>覆盖用户文件</b>，直接违反 L13「其余文档不创建、不修改」。</p>
+        <p><span class="k">处置：</span>加最小重合阈值——公共章节重合 ≥2 个特征标题（如 <span class="code">## 场景上下文</span>、<span class="code">### 约束</span>），否则判为非本技能产物、跳过。</p>
+      </div>
+    </div>
+
+    <div class="p0 risk">
+      <div class="p0-head"><span class="p0-tag">跨技能</span><span class="p0-title">免确认旁路两份实现，语义已漂移</span></div>
+      <div class="p0-body">
+        <p><span class="k">事实：</span>cognition L63–68 带否决条件（否定 / 延后 / 语气），foundation L75 只有正向枚举、无否决条件。</p>
+        <p><span class="k">后果（真 bug）：</span>「不要直接生成 AGENTS.md」——foundation 命中枚举判为免确认直接落盘，cognition 对同一句话正确判为不免确认。同仓库两技能处置相反。</p>
+        <p><span class="k">处置：</span>统一判定文本；<b>不要用跨目录 <span class="code">shared/</span></b>（skills.sh 按技能目录安装，会静默断链）——各放一份到自身 <span class="code">references/</span>，正文只留指针。</p>
+      </div>
+    </div>
+
+    <div class="p0">
+      <div class="p0-head"><span class="p0-tag">cognition</span><span class="p0-title">跳过条件是一台字符偏移伪解析器</span></div>
+      <div class="p0-body">
+        <p><span class="k">事实：</span>L63–68 用「其后 6 字内」「前 4 字内」「后 8 字内」「后 2 字内」逐一枚举否定词、延后词、语气词及其豁免，5 行约 400 字。</p>
+        <p><span class="k">判据：</span>negation 驱动（满篇被禁词）+ no-op（判断用户是否授权是模型自带语用能力）+ sprawl（挤掉第一步判据的注意力）。</p>
+        <p><span class="k">处置：</span>塌缩为正向一句——「仅当用户原话显式授权免确认时才跳过；含任何保留、延后或疑问语气一律不跳过」。实测仍误判再叠最小护栏。</p>
+      </div>
+    </div>
+
+    <div class="p0">
+      <div class="p0-head"><span class="p0-tag">cognition</span><span class="p0-title">description 复述正文身份，同一 branch 写两遍</span></div>
+      <div class="p0-body">
+        <p>「九维 / 三件套 / 反转 / 留白不编造」全是 L8 / L12 / L30 / L126 已载身份；「深挖某个实体」与「构建/生成知识深度树文档」是同一 branch 的同义重写。</p>
+        <p><span class="k">改写：</span><span class="code">知识深度树：给定任意实体产出九维深度文档，以「反转」把默认认知翻过来。当用户要求深挖某个实体、或要生成知识深度树文档时使用。</span></p>
+      </div>
+    </div>
+
+    <div class="p0">
+      <div class="p0-head"><span class="p0-tag">foundation</span><span class="p0-title">归一化对照口径寄居「操作二」，却被公共节与「操作三」引用</span></div>
+      <div class="p0-body">
+        <p>定义写于 L89（操作二），引用方是 L28「污染防护」（公共节）与 L110（操作三判据）→ 各分支被迫跨读另一个分支，违反 branching 测试。</p>
+        <p><span class="k">处置：</span>上移为「模板机制」下独立 reference <span class="code">**对照口径**</span>，三处改同义引用。</p>
+      </div>
+    </div>
+
+    <div class="p0">
+      <div class="p0-head"><span class="p0-tag">foundation</span><span class="p0-title">免确认词表嵌在「操作一」，却自称三操作通用</span></div>
+      <div class="p0-body">
+        <p>L75 自称「（三操作通用，唯一）」，物理位置却在操作一第 3 步之下，被 L68 / L83 / L99 三处引用——全流程唯一旁路闸门放错分支。</p>
+        <p><span class="k">处置：</span>提为顶层公共节 <span class="code">## 免确认旁路</span>，三处 CHECKPOINT 只留引用，并按跨技能项补否决条件。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">两份技能速览</div>
+    <div class="cols">
+      <div class="col">
+        <div class="col-name">cognition</div>
+        <div class="col-meta">130 行 · 九维知识深度树 · 核心＝反转</div>
+        <h4>主要 P1</h4>
+        <ul>
+          <li>L98「每个占位符已填」与模板形态冲突：<span class="code">补充（可选）</span>可空、○ 节点无三件套表 → 判据无法分辨 done/not-done</li>
+          <li>「≥2 个独立来源」5 处复述（含 domains.md）</li>
+          <li>「留白三类」L104 与 L106 定义两遍</li>
+          <li>L126「不编造」negation 且重复，可整条删</li>
+          <li>L55 缺「最多三个」领域上限（只在 domains.md）</li>
+        </ul>
+        <h4>做得好</h4>
+        <ul>
+          <li><span class="good">L79 完成判据</span>：四类取证穷尽 +「四者皆无即为未完成」，强制 legwork</li>
+          <li><span class="good">L104 留白格式</span>：单点定义 + 显式禁止另造变体</li>
+          <li><span class="good">异常表</span>：把「换检索式/换语言/查一手」的 legwork 写进表内</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="col-name">foundation</div>
+        <div class="col-meta">140 行 / 18KB · 四文档基建 · 核心＝挖空点</div>
+        <h4>主要 P1</h4>
+        <ul>
+          <li>「管辖范围」硬约束在 L13–17 / L121–123 / L133 复述三遍</li>
+          <li>「读取优先级（唯一规则）」的例外被 L26 与 L28 双写</li>
+          <li>negation 过载：L13/17/23/28/108/138 密集禁令，多无正向目标</li>
+          <li>操作二完成判据埋在 bullet 里，与另两处格式不一</li>
+          <li>同一判据两套命名：「重合」vs「缺失/对得上」</li>
+        </ul>
+        <h4>做得好</h4>
+        <ul>
+          <li><span class="good">零改动判据 L139–140</span>：把「不越界」变成哈希+清单可核验，且明示如实上报不构成豁免</li>
+          <li><span class="good">免确认词表封闭枚举</span>：未命中即不免确认，防外扩</li>
+          <li><span class="good">归一化 + 漏一章节即未完成</span>：可核验且 demanding</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">建议修改顺序</div>
+    <ol class="steps">
+      <li><b>foundation 文件层阈值</b> —— 先堵覆盖用户文件的实际风险</li>
+      <li><b>统一免确认判定</b> —— foundation 补否决条件，两份各落自身 references/，正文只留指针</li>
+      <li><b>foundation 归一化口径上移</b>为「模板机制」下的公共 reference</li>
+      <li><b>两份 description 改写</b> —— 改动最小、收益最直接</li>
+      <li><b>SSOT 收敛</b> —— ≥2 独立来源（cognition）、管辖范围与基线快照（foundation）</li>
+      <li><b>negation → 正向</b> —— cognition L126 删除、foundation L17 改写</li>
+      <li><b>P2 与仓库层清理</b> —— README 补索引、发布指南与现状不符、darwin-* 产物移出</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    三代理并行审阅 + 主代理实证复核产出 · 判据条款均出自 writing-for-agents（Matt Pocock，MIT 镜像）·
+    所有 P0 均附原文行号或片段，可逐条回查。详细版见 skills-审阅报告-20260921.md。
+  </div>
+
+</div>
+</body>
+</html>
